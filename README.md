@@ -1,274 +1,168 @@
 # ClaudeHub Dashboard
 
-A modern, full-featured dashboard application with Claude AI integration, built with Next.js, Supabase, and Tailwind CSS. Perfect for data visualization, business analytics, and AI-powered insights.
+A modern, full-featured dashboard with Claude AI integration. Deploy in minutes, no local setup required.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fquantnexusai%2Fclaudehub-dashboard&env=NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_ANON_KEY,ANTHROPIC_API_KEY&envDescription=API%20keys%20needed%20for%20the%20dashboard&envLink=https%3A%2F%2Fgithub.com%2Fquantnexusai%2Fclaudehub-dashboard%23setup&project-name=claudehub-dashboard&repository-name=claudehub-dashboard)
+
+![Dashboard Preview](https://via.placeholder.com/800x400/0ea5e9/ffffff?text=ClaudeHub+Dashboard)
 
 ## Features
 
-- **Dynamic Charts & Analytics** - Interactive bar, line, pie, and area charts with real-time data
-- **Claude AI Integration** - Get intelligent insights and analysis powered by Claude
-- **Secure Authentication** - Email/password auth with Supabase Auth
-- **Responsive Design** - Works seamlessly on desktop, tablet, and mobile
-- **Real-time Updates** - Live data synchronization with Supabase
-- **Profile Management** - User settings and account management
-- **Row-Level Security** - Secure data isolation per user
+- **Claude AI Integration** - Get intelligent insights and analysis
+- **Interactive Charts** - Bar, line, pie, and area charts
+- **Real-time Dashboard** - Stats, metrics, and KPIs at a glance
+- **User Authentication** - Secure login with Supabase Auth
+- **Demo Mode** - Works instantly without any configuration
+- **Responsive Design** - Desktop, tablet, and mobile ready
+
+## Quick Start (2 minutes)
+
+### Step 1: Deploy to Vercel
+
+Click the button above, or:
+
+1. Fork this repository
+2. Go to [vercel.com/new](https://vercel.com/new)
+3. Import your forked repo
+4. Deploy (works immediately in demo mode!)
+
+### Step 2: Set Up Supabase (Optional)
+
+To use real data instead of demo data:
+
+1. Create a project at [supabase.com](https://supabase.com)
+2. Go to **SQL Editor** and run the schema:
+
+```sql
+-- Copy contents from supabase/schema.sql
+```
+
+Or use the quick setup link:
+[Create Supabase Project with Schema](https://supabase.com/dashboard/new?template=claudehub)
+
+3. Copy your credentials from **Settings > API**
+
+### Step 3: Add Environment Variables
+
+In your Vercel dashboard, go to **Settings > Environment Variables** and add:
+
+| Variable | Where to Find |
+|----------|--------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase > Settings > API > Project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase > Settings > API > anon public |
+| `ANTHROPIC_API_KEY` | [console.anthropic.com](https://console.anthropic.com) |
+
+### Step 4: Redeploy
+
+Vercel will automatically redeploy when you add environment variables. Your dashboard is now fully connected!
+
+## Demo Mode
+
+The app works **without any configuration**. When API keys aren't set:
+
+- Authentication uses demo credentials
+- Dashboard shows sample data
+- Claude AI returns helpful demo responses
+- All features are explorable
+
+This lets you try everything before connecting your own services.
 
 ## Tech Stack
 
-- **Frontend**: Next.js 15, React 19, TypeScript
-- **Styling**: Tailwind CSS
-- **Charts**: Recharts
-- **Backend**: Supabase (PostgreSQL, Auth, Storage)
-- **AI**: Anthropic Claude API
-- **Deployment**: Netlify
-- **Icons**: Lucide React
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+ and npm
-- A Supabase account and project
-- An Anthropic API key
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/quantnexusai/claudehub-dashboard.git
-cd claudehub-dashboard
-```
-
-### 2. Install Dependencies
-
-```bash
-npm install
-```
-
-### 3. Set Up Environment Variables
-
-Copy the example environment file and fill in your credentials:
-
-```bash
-cp .env.example .env.local
-```
-
-Edit `.env.local` with your values:
-
-```env
-# Supabase Configuration
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
-
-# Anthropic Claude API
-ANTHROPIC_API_KEY=your_anthropic_api_key
-
-# App Configuration
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-```
-
-### 4. Set Up Supabase Database
-
-1. Go to your Supabase project dashboard
-2. Navigate to SQL Editor
-3. Copy and run the contents of `supabase/schema.sql`
-
-This will create all necessary tables with proper Row-Level Security policies.
-
-### 5. Run the Development Server
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+| Component | Technology |
+|-----------|------------|
+| Framework | Next.js 15 |
+| Styling | Tailwind CSS |
+| Charts | Recharts |
+| Database | Supabase (PostgreSQL) |
+| Auth | Supabase Auth |
+| AI | Claude API |
+| Hosting | Vercel |
 
 ## Project Structure
 
 ```
-claudehub-dashboard/
-├── public/                 # Static assets
-├── src/
-│   ├── app/               # Next.js App Router pages
-│   │   ├── api/           # API routes
-│   │   │   └── claude/    # Claude AI endpoint
-│   │   ├── dashboard/     # Dashboard pages
-│   │   │   ├── charts/    # Charts page
-│   │   │   ├── claude/    # Claude AI chat
-│   │   │   ├── forms/     # Forms page
-│   │   │   └── groups/    # Groups page
-│   │   ├── profile/       # Profile settings
-│   │   └── reset-password/# Password reset
-│   ├── components/        # React components
-│   │   ├── dashboard/     # Dashboard-specific components
-│   │   └── ui/            # Reusable UI components
-│   └── lib/               # Utilities and configs
-│       ├── auth-context.tsx  # Auth context provider
-│       ├── supabase.ts    # Supabase client
-│       └── types.ts       # TypeScript types
-├── supabase/
-│   └── schema.sql         # Database schema and RLS policies
-├── .env.example           # Example environment variables
-├── netlify.toml           # Netlify configuration
-├── package.json
-├── tailwind.config.js
-└── tsconfig.json
+src/
+├── app/                    # Next.js pages
+│   ├── dashboard/         # Dashboard views
+│   │   ├── charts/       # Chart visualizations
+│   │   ├── claude/       # AI chat interface
+│   │   ├── forms/        # Data entry forms
+│   │   └── groups/       # Project management
+│   ├── profile/          # User settings
+│   └── api/claude/       # AI API endpoint
+├── components/            # React components
+└── lib/                   # Utilities
+    ├── supabase.ts       # Database client
+    ├── auth-context.tsx  # Auth provider
+    └── demo-data.ts      # Demo mode data
 ```
-
-## Pages Overview
-
-| Page | Path | Description |
-|------|------|-------------|
-| Landing | `/` | Public landing page with features, pricing, testimonials |
-| Dashboard | `/dashboard` | Main dashboard with stats and overview |
-| Charts | `/dashboard/charts` | Interactive chart visualizations |
-| Forms | `/dashboard/forms` | Data entry forms |
-| Groups | `/dashboard/groups` | Project and group management |
-| Claude AI | `/dashboard/claude` | AI chat interface |
-| Profile | `/profile` | User settings and account management |
-| Reset Password | `/reset-password` | Password reset flow |
 
 ## Customization
 
-### Adding New Charts
+### Using Claude Code
 
-1. Add chart data to your Supabase database
-2. Create a new chart component in `src/components/dashboard/`
-3. Use Recharts components for visualization
-4. Import and use in your dashboard pages
+The easiest way to customize this dashboard:
 
-### Modifying Claude AI Behavior
+1. Install [Claude Code](https://claude.ai/code)
+2. Open your forked repo
+3. Ask Claude to make changes:
+   - "Add a new chart showing monthly trends"
+   - "Change the color scheme to dark mode"
+   - "Add a new dashboard tab for inventory"
 
-Edit the system prompt in `src/app/api/claude/route.ts`:
+### Manual Changes
 
-```typescript
-const SYSTEM_PROMPT = `Your custom instructions here...`
-```
+Edit files directly on GitHub or clone locally. Key files:
 
-### Adding New Dashboard Tabs
+- `src/app/page.tsx` - Landing page
+- `src/app/dashboard/page.tsx` - Main dashboard
+- `src/lib/demo-data.ts` - Demo data
+- `tailwind.config.js` - Colors and theme
 
-1. Create a new page in `src/app/dashboard/your-tab/page.tsx`
-2. Add the navigation item to `src/components/dashboard/Sidebar.tsx`
-3. Style using Tailwind CSS classes
+## Environment Variables
 
-### Customizing the Theme
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | No* | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | No* | Supabase anonymous key |
+| `ANTHROPIC_API_KEY` | No* | Claude API key |
 
-Edit `tailwind.config.js` to modify colors, fonts, and other design tokens:
+*App runs in demo mode if not provided
 
-```javascript
-theme: {
-  extend: {
-    colors: {
-      primary: {
-        // Your custom primary colors
-      },
-    },
-  },
-},
-```
+## Database Schema
 
-## Security Considerations
+The Supabase schema includes:
 
-### Row-Level Security (RLS)
+- `profiles` - User profiles
+- `sales_stats` - Dashboard statistics
+- `transactions` - Financial transactions
+- `projects` - Project tracking
+- `invoices` - Invoice management
+- `chat_messages` - AI conversation history
 
-All database tables have RLS policies enabled. Users can only access their own data. Review `supabase/schema.sql` for policy details.
+All tables have Row-Level Security (RLS) enabled.
 
-### Environment Variables
+## Security
 
-- Never commit `.env.local` to version control
-- Use Netlify environment variables for production
-- Keep your `SUPABASE_SERVICE_ROLE_KEY` secure (server-side only)
-- Rotate API keys periodically
-
-### Authentication
-
-- Passwords require minimum 6 characters
-- Email verification is optional (configure in Supabase)
-- Session tokens are handled automatically by Supabase
-
-## Deployment to Netlify
-
-### Option 1: Deploy via Netlify CLI
-
-```bash
-npm install -g netlify-cli
-netlify login
-netlify init
-netlify deploy --prod
-```
-
-### Option 2: Deploy via GitHub
-
-1. Push your code to GitHub
-2. Connect your repo in Netlify dashboard
-3. Configure build settings:
-   - Build command: `npm run build`
-   - Publish directory: `.next`
-4. Add environment variables in Netlify dashboard
-5. Deploy!
-
-### Environment Variables in Netlify
-
-Add these in your Netlify dashboard under Site Settings > Environment Variables:
-
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- `SUPABASE_SERVICE_ROLE_KEY`
-- `ANTHROPIC_API_KEY`
-- `NEXT_PUBLIC_APP_URL` (your Netlify domain)
-
-## API Reference
-
-### Claude AI Endpoint
-
-**POST** `/api/claude`
-
-Request body:
-```json
-{
-  "message": "Your question or prompt",
-  "conversationHistory": [
-    { "role": "user", "content": "Previous message" },
-    { "role": "assistant", "content": "Previous response" }
-  ]
-}
-```
-
-Response:
-```json
-{
-  "response": "Claude's response text",
-  "usage": {
-    "input_tokens": 100,
-    "output_tokens": 200
-  }
-}
-```
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- Environment variables never exposed to client (except `NEXT_PUBLIC_*`)
+- Supabase RLS ensures users only access their own data
+- API routes validate requests server-side
+- HTTPS enforced in production
 
 ## Support
 
-For questions or issues:
-- Open a GitHub issue
-- Check existing issues for solutions
+- [Open an issue](https://github.com/quantnexusai/claudehub-dashboard/issues)
+- [View discussions](https://github.com/quantnexusai/claudehub-dashboard/discussions)
 
-## Acknowledgments
+## Contributing
 
-- [Next.js](https://nextjs.org/)
-- [Supabase](https://supabase.com/)
-- [Anthropic Claude](https://www.anthropic.com/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Recharts](https://recharts.org/)
-- [Lucide Icons](https://lucide.dev/)
+See [CONTRIBUTING.md](CONTRIBUTING.md) for local development setup.
+
+## License
+
+MIT License - use freely for personal or commercial projects.
+
+---
+
+Built with [Next.js](https://nextjs.org), [Supabase](https://supabase.com), [Claude](https://anthropic.com), and [Vercel](https://vercel.com).

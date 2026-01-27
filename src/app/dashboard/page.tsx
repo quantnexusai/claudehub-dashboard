@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/lib/auth-context'
+import { demoStats, demoTransactions } from '@/lib/demo-data'
 import type { SalesStats, Transaction } from '@/lib/types'
 import RevenueChart from '@/components/dashboard/RevenueChart'
 import RecentTransactions from '@/components/dashboard/RecentTransactions'
@@ -47,7 +48,7 @@ function StatCard({ title, value, change, icon: Icon, iconBg, iconColor }: StatC
 }
 
 export default function DashboardOverview() {
-  const { user } = useAuth()
+  const { user, isDemo } = useAuth()
   const [stats, setStats] = useState<SalesStats | null>(null)
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
@@ -56,35 +57,26 @@ export default function DashboardOverview() {
     if (user) {
       fetchData()
     }
-  }, [user])
+  }, [user, isDemo])
 
   const fetchData = async () => {
+    // Use demo data if in demo mode
+    if (isDemo) {
+      setStats(demoStats)
+      setTransactions(demoTransactions)
+      setLoading(false)
+      return
+    }
+
     try {
-      // Fetch stats - use demo data if no user-specific data exists
+      // Fetch stats from Supabase
       const { data: statsData } = await supabase
         .from('sales_stats')
         .select('*')
         .eq('user_id', user!.id)
         .single()
 
-      if (statsData) {
-        setStats(statsData)
-      } else {
-        // Use demo data
-        setStats({
-          id: 'demo',
-          created_at: new Date().toISOString(),
-          invoices: 156,
-          offline: 3420,
-          online: 5000,
-          projects: 89,
-          queries: 1250,
-          returns: 23,
-          revenue: 124500,
-          users: 8420,
-          user_id: user!.id,
-        })
-      }
+      setStats(statsData || demoStats)
 
       // Fetch transactions
       const { data: txData } = await supabase
@@ -94,20 +86,12 @@ export default function DashboardOverview() {
         .order('created_at', { ascending: false })
         .limit(5)
 
-      if (txData && txData.length > 0) {
-        setTransactions(txData)
-      } else {
-        // Demo transactions
-        setTransactions([
-          { id: '1', created_at: new Date().toISOString(), amount: 2500, description: 'Project Alpha payment', type: 'income', user_id: user!.id },
-          { id: '2', created_at: new Date(Date.now() - 86400000).toISOString(), amount: 1200, description: 'Software subscription', type: 'expense', user_id: user!.id },
-          { id: '3', created_at: new Date(Date.now() - 172800000).toISOString(), amount: 4800, description: 'Consulting fee', type: 'income', user_id: user!.id },
-          { id: '4', created_at: new Date(Date.now() - 259200000).toISOString(), amount: 350, description: 'Office supplies', type: 'expense', user_id: user!.id },
-          { id: '5', created_at: new Date(Date.now() - 345600000).toISOString(), amount: 1800, description: 'Client retainer', type: 'income', user_id: user!.id },
-        ])
-      }
+      setTransactions(txData && txData.length > 0 ? txData : demoTransactions)
     } catch (error) {
       console.error('Error fetching dashboard data:', error)
+      // Fallback to demo data on error
+      setStats(demoStats)
+      setTransactions(demoTransactions)
     } finally {
       setLoading(false)
     }

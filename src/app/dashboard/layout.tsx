@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/lib/auth-context'
 import Sidebar from '@/components/dashboard/Sidebar'
 import DashboardHeader from '@/components/dashboard/DashboardHeader'
+import DemoBanner from '@/components/DemoBanner'
 import { Loader2 } from 'lucide-react'
 
 export default function DashboardLayout({
@@ -36,6 +37,7 @@ export default function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <DemoBanner />
       <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
       <div className={`transition-all duration-300 ${sidebarOpen ? 'lg:ml-64' : 'lg:ml-20'}`}>
         <DashboardHeader toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />

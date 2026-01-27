@@ -4,18 +4,11 @@ import { useEffect, useState } from 'react'
 import { Search, Filter, MoreVertical, Edit2, Trash2, Eye } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/lib/auth-context'
+import { demoProjects } from '@/lib/demo-data'
 import type { Project } from '@/lib/types'
 
-const demoProjects: Project[] = [
-  { id: '1', created_at: new Date().toISOString(), amount: 12500, deadline: '2024-03-15', first_name: 'John Smith', image_url: null, product: 'Website Redesign', progress: 75, status: 'In Progress', user_id: '' },
-  { id: '2', created_at: new Date().toISOString(), amount: 8200, deadline: '2024-03-20', first_name: 'Sarah Johnson', image_url: null, product: 'Mobile App', progress: 45, status: 'In Progress', user_id: '' },
-  { id: '3', created_at: new Date().toISOString(), amount: 15000, deadline: '2024-02-28', first_name: 'Mike Wilson', image_url: null, product: 'E-commerce Platform', progress: 100, status: 'Completed', user_id: '' },
-  { id: '4', created_at: new Date().toISOString(), amount: 5500, deadline: '2024-04-01', first_name: 'Emily Davis', image_url: null, product: 'Dashboard UI', progress: 20, status: 'Planning', user_id: '' },
-  { id: '5', created_at: new Date().toISOString(), amount: 9800, deadline: '2024-03-25', first_name: 'Alex Brown', image_url: null, product: 'API Integration', progress: 60, status: 'In Progress', user_id: '' },
-]
-
 export default function GroupsPage() {
-  const { user } = useAuth()
+  const { user, isDemo } = useAuth()
   const [projects, setProjects] = useState<Project[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
@@ -26,9 +19,16 @@ export default function GroupsPage() {
     if (user) {
       fetchProjects()
     }
-  }, [user])
+  }, [user, isDemo])
 
   const fetchProjects = async () => {
+    // Use demo data if in demo mode
+    if (isDemo) {
+      setProjects(demoProjects)
+      setLoading(false)
+      return
+    }
+
     try {
       const { data, error } = await supabase
         .from('projects')
@@ -38,14 +38,10 @@ export default function GroupsPage() {
 
       if (error) throw error
 
-      if (data && data.length > 0) {
-        setProjects(data)
-      } else {
-        setProjects(demoProjects.map((p) => ({ ...p, user_id: user!.id })))
-      }
+      setProjects(data && data.length > 0 ? data : demoProjects)
     } catch (error) {
       console.error('Error fetching projects:', error)
-      setProjects(demoProjects.map((p) => ({ ...p, user_id: user!.id })))
+      setProjects(demoProjects)
     } finally {
       setLoading(false)
     }

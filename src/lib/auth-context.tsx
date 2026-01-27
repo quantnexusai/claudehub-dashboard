@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import { User, Session } from '@supabase/supabase-js'
 import { supabase } from './supabase'
+import { isDemoMode, demoUser, demoProfile } from './demo-data'
 import type { Profile } from './types'
 
 interface AuthContextType {
@@ -10,6 +11,7 @@ interface AuthContextType {
   session: Session | null
   profile: Profile | null
   loading: boolean
+  isDemo: boolean
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>
   signUp: (email: string, password: string, firstName?: string, lastName?: string) => Promise<{ error: Error | null }>
   signOut: () => Promise<void>
@@ -24,8 +26,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null)
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
+  const [isDemo, setIsDemo] = useState(false)
 
   useEffect(() => {
+    // Check if we're in demo mode
+    if (isDemoMode()) {
+      setIsDemo(true)
+      setUser(demoUser as unknown as User)
+      setProfile(demoProfile)
+      setLoading(false)
+      return
+    }
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
       setUser(session?.user ?? null)
@@ -49,6 +61,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const fetchProfile = async (userId: string) => {
+    if (isDemo) {
+      setProfile(demoProfile)
+      return
+    }
+
     const { data, error } = await supabase
       .from('profiles')
       .select('*')
@@ -61,11 +78,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const signIn = async (email: string, password: string) => {
+    if (isDemo) {
+      // In demo mode, any login works
+      setUser(demoUser as unknown as User)
+      setProfile(demoProfile)
+      return { error: null }
+    }
+
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     return { error: error as Error | null }
   }
 
   const signUp = async (email: string, password: string, firstName?: string, lastName?: string) => {
+    if (isDemo) {
+      // In demo mode, signup just logs in
+      setUser(demoUser as unknown as User)
+      setProfile({ ...demoProfile, first_name: firstName || 'Demo', last_name: lastName || 'User' })
+      return { error: null }
+    }
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -90,11 +121,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const signOut = async () => {
+    if (isDemo) {
+      // In demo mode, just redirect to home
+      setUser(null)
+      setProfile(null)
+      return
+    }
+
     await supabase.auth.signOut()
     setProfile(null)
   }
 
   const resetPassword = async (email: string) => {
+    if (isDemo) {
+      return { error: null }
+    }
+
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/reset-password`,
     })
@@ -102,6 +144,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const updateProfile = async (updates: Partial<Profile>) => {
+    if (isDemo) {
+      setProfile((prev) => prev ? { ...prev, ...updates } : null)
+      return { error: null }
+    }
+
     if (!user) return { error: new Error('No user logged in') }
 
     const { error } = await supabase
@@ -122,6 +169,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       session,
       profile,
       loading,
+      isDemo,
       signIn,
       signUp,
       signOut,
