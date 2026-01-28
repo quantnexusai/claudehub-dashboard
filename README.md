@@ -2,7 +2,7 @@
 
 A modern, full-featured dashboard with Claude AI integration. Deploy in minutes, no local setup required.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fquantnexusai%2Fclaudehub-dashboard&env=NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_ANON_KEY,ANTHROPIC_API_KEY&envDescription=API%20keys%20needed%20for%20the%20dashboard&envLink=https%3A%2F%2Fgithub.com%2Fquantnexusai%2Fclaudehub-dashboard%23setup&project-name=claudehub-dashboard&repository-name=claudehub-dashboard)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fquantnexusai%2Fclaudehub-dashboard&project-name=claudehub-dashboard&repository-name=claudehub-dashboard)
 
 ## Features
 
