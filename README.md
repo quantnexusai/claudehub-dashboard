@@ -152,7 +152,7 @@ All tables have Row-Level Security (RLS) enabled.
 - [View discussions](https://github.com/quantnexusai/claudehub-dashboard/discussions)
 
 **Need help with deployment, configuration, or customization (MCP servers, AI agents, etc.)?**
-Contact us at **templates@quantnexus.ai**
+Contact us at **ari@quantnexus.ai**
 
 ## Contributing
 
