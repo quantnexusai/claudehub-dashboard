@@ -35,7 +35,7 @@ Edit `.env.local` with your values (optional - app works in demo mode without th
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your_supabase_publishable_key
 ANTHROPIC_API_KEY=your_anthropic_api_key
 ```
 

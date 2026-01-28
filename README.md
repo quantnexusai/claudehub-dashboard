@@ -2,7 +2,7 @@
 
 A modern, full-featured dashboard with Claude AI integration. Deploy in minutes, no local setup required.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fquantnexusai%2Fclaudehub-dashboard&project-name=claudehub-dashboard&repository-name=claudehub-dashboard)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fquantnexusai%2Fclaudehub-dashboard&env=NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,ANTHROPIC_API_KEY&envDescription=Get%20keys%20from%20Supabase%20and%20Anthropic&envLink=https%3A%2F%2Fgithub.com%2Fquantnexusai%2Fclaudehub-dashboard%23environment-variables&project-name=claudehub-dashboard&repository-name=claudehub-dashboard)
 
 ## Features
 
@@ -47,7 +47,7 @@ In your Vercel dashboard, go to **Settings > Environment Variables** and add:
 | Variable | Where to Find |
 |----------|--------------|
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase > Settings > API > Project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase > Settings > API > anon public |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase > Settings > API > Publishable key |
 | `ANTHROPIC_API_KEY` | [console.anthropic.com](https://console.anthropic.com) |
 
 ### Step 4: Redeploy
@@ -122,11 +122,9 @@ Edit files directly on GitHub or clone locally. Key files:
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `NEXT_PUBLIC_SUPABASE_URL` | No* | Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | No* | Supabase anonymous key |
-| `ANTHROPIC_API_KEY` | No* | Claude API key |
-
-*App runs in demo mode if not provided
+| `NEXT_PUBLIC_SUPABASE_URL` | Yes | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Yes | Supabase publishable key |
+| `ANTHROPIC_API_KEY` | Yes | Claude API key |
 
 ## Database Schema
 
